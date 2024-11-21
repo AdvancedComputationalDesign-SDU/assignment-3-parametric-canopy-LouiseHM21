@@ -157,6 +157,20 @@
   - Voronoi Diagrams
   - Delaunay Triangulation
 
+
+Inspiration:
+- https://en.idei.club/35099-voronoi-generation.html
+- https://parametrichouse.com/voronoi-architecture/
+- https://link.springer.com/article/10.1007/s00004-018-0383-y
+
+References:
+- https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Voronoi.html
+- Random
+- NumPy
+- Rhino.Python Guides
+- RhinoScriptSyntax Documentation
+- ChatGPT
+
 ---
 
 *(Feel free to expand upon these sections to fully capture your work and learning process.)*
