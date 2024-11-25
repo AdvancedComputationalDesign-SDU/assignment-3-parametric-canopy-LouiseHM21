@@ -252,14 +252,11 @@
 - **Challenge 1**: Having a vision or inspiration, and not knowing how to make it.
   - **Solution**: I made something else.
 
-- **Challenge 2**: Not knowing how to debug and fix the error in my code
+- **Challenge 2**: Not knowing how to debug and fix the errors in my code.
   - **Solution**: I got ChatGPT to explain it to me and sometimes help me fix the errors.
 
 - **Challenge 3**: Not being able to make a non-planar voronoi.
-  - **Solution**: I devided to not make a voronoi.
-
-- **Challenge 4**: Not being able to make a non-planar voronoi.
-  - **Solution**: I devided to not make a voronoi.
+  - **Solution**: I decided to not make a voronoi.
 
 ---
 
