@@ -151,7 +151,9 @@
 
 1. **Variation 1**
 
-   ![Base Surface 1](images/Base_Surface_1.jpg)  [Canopy 1](images/Final_Structure_1.jpg)  [Depth map 1](images/Depth_Map_1.jpg)
+   ![Base Surface 1](images/Base_Surface_1.jpg)
+   ![Depth map 1](images/Depth_Map_1.jpg)
+   ![Canopy 1](images/Final_Structure_1.jpg)
 
    - **Parameters**:
      - Points in rhino
@@ -159,7 +161,9 @@
 
 2. **Variation 2**
 
-   ![Base Surface 2](images/Base_Surface_2.jpg)  [Canopy 2](images/Final_Structure_2.jpg)  [Depth map 2](images/Depth_Map_2.jpg)
+   ![Base Surface 2](images/Base_Surface_2.jpg)
+   ![Depth map 2](images/Depth_Map_2.jpg)
+   ![Canopy 2](images/Final_Structure_2.jpg)
 
    - **Parameters**:
      - Points in rhino
@@ -167,7 +171,9 @@
 
 3. **Variation 3**
 
-   ![Base Surface 3](images/Base_Surface_3.jpg)  [Canopy 3](images/Final_Structure_3.jpg)  [Depth map 3](images/Depth_Map_3.jpg)
+   ![Base Surface 3](images/Base_Surface_3.jpg)
+   ![Depth map 3](images/Depth_Map_3.jpg)
+   ![Canopy 3](images/Final_Structure_3.jpg)
 
    - **Parameters**:
      - Points in rhino
