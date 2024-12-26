@@ -4,7 +4,7 @@
 
 - [Pseudo-Code](#pseudo-code)
 - [Technical Explanation](#technical-explanation)
-- [Design Variations](#design-variations)
+- [Results](#results)
 - [Challenges and Solutions](#challenges-and-solutions)
 - [References](#references)
 
@@ -12,142 +12,107 @@
 
 ## Pseudo-Code
 
-### Pseudo-code: Canopy Structure Generation
+### **Main Function: Generating the Canopy**
 
-1. **Main Function: Generating the Canopy**
-   
-   - **Inputs**:
-     - `base_surface`: The initial surface for the canopy (Rhino.Geometry.Mesh).
-     - `depth_map_control`: Control parameter for depth variation (e.g., from a slider).
-     - `recursion_params`: Parameters for recursive supports, such as `depth`, `angle`, `length_multiplier`, etc.
-     - `tessellation_strategy`: Strategy for surface tessellation (e.g., X, Y, diagonal lines).
-     - `extrema_count`: The number of extrema points to generate supports from (based on a slider).
+1. **Inputs**:
+   - `base_surface`: The initial surface for the canopy.
+   - `depth_map_control`: Control parameter for depth variation.
+   - `recursion_params`: Parameters for recursive supports (`depth`, `angle`, `length_multiplier`, etc.).
+   - `tessellation_strategy`: Strategy for surface tessellation (e.g., X, Y, diagonal lines).
+   - `extrema_count`: Number of extrema points to generate supports.
 
-   - **Process**:
-     1. **Generate Depth Map**:
-        - Modify the `base_surface` by applying depth variations.
-        - Use a control function to adjust surface heights based on `depth_map_control`.
-     
-     2. **Find Extremum Points**:
-        - Calculate all extrema (global and local minima and maxima) on the modified surface.
-        - Use the `find_all_extrema_points` function to identify points where supports will be generated.
+2. **Process**:
+   - **Step 1**: Generate Depth Map:
+     - Modify the `base_surface` with depth variations using a control parameter.
+   - **Step 2**: Find Extremum Points:
+     - Identify global and local minima and maxima on the modified surface.
+   - **Step 3**: Generate Recursive Supports:
+     - Use extrema points to define support placements.
+     - Apply recursion to create branching structures.
+   - **Step 4**: Adjust Surface Height:
+     - Align the surface to match support heights.
+   - **Step 5**: Tessellate the Surface:
+     - Divide the surface into panels using the selected tessellation strategy.
+   - **Step 6**: Apply Thickness to Supports and Tessellation:
+     - Pipe the generated curves for thickness.
 
-     3. **Generate Recursive Supports**:
-        - Use the extrema points to define where the supports should be placed.
-        - Apply recursion to generate branching structures at the selected extrema points.
-        - Parameters like `depth`, `branches`, `angle`, and `length_multiplier` control the support shape.
+3. **Outputs**:
+   - `canopy_mesh`: The final tessellated and thickened canopy mesh.
+   - `supports`: The generated recursive support structures.
 
-     4. **Adjust Surface Height**:
-        - After generating the recursive supports, move the deformed surface to fit the support heights.
-        - Use Grasshopper components to adjust the mesh height to ensure it aligns with the support structure.
+### **Functions**
 
-     5. **Tessellate the Surface**:
-        - Apply tessellation to the modified surface using a defined strategy (e.g., grid, diagonal, etc.).
-        - Ensure the tessellation follows the surface shape and conforms to the support locations.
+- **`generate_depth_map(base_surface, control_value)`**:
+  - *Purpose*: Deform the input surface to introduce depth variation.
+  - *Process*: Apply sine or noise functions to create surface deformation.
 
-     6. **Apply Thickness to Supports and Tessellation**:
-        - Pipe the generated curves (from tessellation and supports) to give them a defined thickness.
-        - Use Grasshopper components to apply thickness to the curves and create a final canopy structure.
+- **`find_all_extrema_points(mesh)`**:
+  - *Purpose*: Identify extrema points on the mesh.
+  - *Process*: Loop through vertices, compare Z-coordinates, and find minima/maxima.
 
-   - **Outputs**:
-     - `canopy_mesh`: The final tessellated and thickened canopy mesh.
-     - `supports`: The generated recursive support structures, possibly with thickness applied.
+- **`generate_recursive_supports(start_point, params, depth)`**:
+  - *Purpose*: Create branching structures recursively.
+  - *Process*: Draw branches using recursion and reduce their size and angle at each step.
 
-2. **Functions**
+- **`tessellate_surface(surface, strategy)`**:
+  - *Purpose*: Tessellate the surface based on the chosen strategy.
+  - *Process*: Divide the surface into panels aligned with the support structure.
 
-   - **`generate_depth_map(base_surface, control_value)`**
-     - *Purpose*: Deform the input surface to introduce depth variation.
-     - *Implementation*:
-       - Adjust control points or apply a mathematical function (like sine or noise) to create a surface deformation based on `control_value`.
-
-   - **`find_all_extrema_points(mesh)`**
-     - *Purpose*: Identify global and local extrema points on the mesh surface.
-     - *Implementation*:
-       - Loop through mesh vertices, compare their Z-coordinates, and determine minima and maxima points.
-       - Store global and local extrema points for further use.
-
-   - **`generate_recursive_supports(start_point, params, depth)`**
-     - *Purpose*: Generate branching support structures using recursion.
-     - *Implementation*:
-       - For each start point, generate a branch using `draw_tree_branch`.
-       - Recursively call the function with reduced branch length and modified angles until the `depth` reaches zero.
-       - Control the angle and number of branches at each recursion step to create a branching pattern.
-
-   - **`tessellate_surface(surface, strategy)`**
-     - *Purpose*: Tessellate the surface based on the chosen tessellation strategy.
-     - *Implementation*:
-       - Divide the surface into panels using the selected tessellation algorithm (e.g., X and Y lines, diagonal lines).
-       - Apply non-uniform tessellation to ensure smooth transitions and fit with the support points.
-
-   - **`Mesh Pipe)`**
-     - *Purpose*: Apply a pipe to the tessellated and support curves to give them a defined thickness.
-     - *Implementation*:
-       - Use Grasshopper components to pipe the generated curves and create a solid structure.
+- **`Mesh Pipe`**:
+  - *Purpose*: Apply thickness to curves for a solid structure.
+  - *Process*: Pipe curves generated from tessellation and supports.
 
 ---
 
 ## Technical Explanation
 
-- **Depth Map Generation**
-  - Explain how you manipulated the surface geometry.
-      The input surface is first validated to ensure it is planar. It is then divided into a grid of points based on its domain and the specified number of divisions. These grid points act as control points for the surface deformation. Each grid point is displaced in the Z direction based on its proximity to attractor points. Attractors influence nearby points, creating localized bulges or depressions. After deformation, the modified grid points are used to construct a mesh. The vertices of the mesh are defined by the displaced points, and quadrilateral faces are added to connect adjacent points, forming a continuous surface.
+### **Depth Map Generation**
+- **Surface Deformation**:
+  - The base surface is divided into a grid of control points.
+  - Each grid point is displaced vertically (Z-axis) based on proximity to attractors.
+  - Attractors influence points with a strength parameter and inverse-distance weighting.
 
-  - Discuss the mathematical functions used (e.g., sine, cosine).
-      Attractor Points: Attractor points serve as sources of deformation. The influence of an attractor on a grid point is inversely proportional to their distance, calculated using: 
-      weight = 1 / (distance + ϵ)
-      Here, 𝜖 is a small constant to prevent division by zero. This ensures that points closer to the attractor experience stronger deformation.
+- **Mathematical Functions**:
+  - Attractor influence: 
+    \[
+    \text{weight} = \frac{1}{\text{distance} + \epsilon}
+    \]
+  - Vertical displacement: 
+    \[
+    \text{movement} = \text{z\_diff} \times \text{weight} \times \text{strength}
+    \]
 
-      Z-Direction Displacement: The vertical movement of each grid point is computed as: 
-      movement = z_diff * weight * strength
-      where z_diff is the vertical distance between the attractor and the grid point. The displacement is scaled by a strength parameter to control the intensity of deformation.
+- **Control Parameters**:
+  - `Strength`: Intensity of deformation.
+  - `Divisions`: Grid resolution.
+  - `Attractor Points`: Placement and number define deformation regions.
 
-      Normalization: The total influence on each point is normalized by summing the weights of all attractors. This prevents over-amplification of deformation and ensures smooth transitions between affected and unaffected regions.
+### **Surface Tessellation**
+- **Strategies**:
+  - Horizontal, vertical, and diagonal tessellation lines projected onto the mesh.
+  - Non-uniform tessellation achieved through sine-modulated lines.
 
-      Overshooting Prevention: To maintain natural deformation, the displacement of grid points is limited to avoid overshooting the attractor. Grid points move only toward or away from attractors without surpassing them.
+- **Contributions to Design**:
+  - Ensures alignment with the organic surface shape.
+  - Enhances visual interest and structural functionality.
 
-  - Describe how control parameters affect the depth variations.
-      Strength: The strength parameter directly controls the intensity of deformation. Higher values result in more pronounced bulges or depressions around the attractors, while lower values create subtler effects.
+### **Recursive Supports Generation**
+- **Recursion for Branching**:
+  - Each branch spawns smaller branches with reduced length and angle.
+  - Recursion stops when depth reaches zero.
 
-      Divisions: This parameter determines the resolution of the grid. A higher number of divisions produces a finer mesh with greater detail, capturing subtle variations. Conversely, fewer divisions result in a coarser mesh with less detail.
-
-      Attractor Points: The location, number, and distribution of attractor points define the regions of deformation. Multiple attractors can create overlapping or distinct areas of influence, generating complex patterns.
-
-      Distance Weighting: The use of inverse-distance weighting ensures that points farther from an attractor experience less deformation. This creates smooth, natural transitions across the surface, avoiding abrupt changes in geometry.
-
-- **Surface Tessellation**
-  - Describe the tessellation strategies implemented.
-      The code employs horizontal, vertical, and diagonal tessellation lines projected onto a mesh using rg.Curve.ProjectToMesh. Horizontal and vertical lines are modulated by sine waves for non-uniform spacing, while diagonals span corner-to-corner, adding complexity.
-
-  - Explain how tessellation contributes to the canopy design.
-      Tessellation adapts to the mesh’s organic shape, ensuring alignment with its surface. Sine-modulated lines mimic natural rhythms, adding visual interest. Diagonal elements enhance the dynamic appearance and may provide structural reinforcement.
-
-  - Discuss any algorithms or techniques used for non-uniform tessellation.
-      Tessellation adapts to the mesh’s organic shape, ensuring alignment with its surface. Sine-modulated lines mimic natural rhythms, adding visual interest. Diagonal elements enhance the dynamic appearance and may provide structural reinforcement.
-
-
-- **Recursive Supports Generation**
-  - Explain how recursion was used to create complex support structures.
-      The code uses recursion to generate tree-like branching structures. At each recursive step, a branch is created starting from a given point, extending in 3D space based on specified angles and lengths. Each branch splits into multiple smaller branches, creating a hierarchical pattern. The recursion stops when the depth reaches zero, representing the base case.
-
-  - Discuss the parameters that control the recursion (e.g., depth, angle).
-      Depth: Determines the number of recursive iterations, directly controlling the overall complexity and density of the structure.
-
-      Angle (XY and Z): Controls the spatial orientation of branches. The angle_xy defines the spread in the XY plane, while angle_z adjusts the tilt relative to the Z-axis.
-
-      Length Multiplier: Reduces the branch length with each recursive step, mimicking natural tapering seen in tree growth.
-
-      Branches: Sets the number of branches at each node, affecting the density of the structure.
-
-      Randomness: Optionally adds variation to branching angles, introducing organic irregularity.
-
-  - Describe how branching patterns were achieved.
-      Branching patterns are formed through iterative subdivision of branches. By default, branches are spaced evenly in the XY plane, creating symmetrical structures. The inclusion of a random offset adds natural variation, enhancing the organic appearance. The combination of controlled parameters, such as depth and length reduction, creates a visually coherent yet intricate network of supports.
+- **Control Parameters**:
+  - `Depth`: Number of recursion levels.
+  - `Angle`: Determines branch spread and tilt.
+  - `Length Multiplier`: Reduces branch size with each step.
+  - `Branches`: Number of branches per node.
+  - `Randomness`: Adds variation to branching angles.
 
 ---
 
-## Design Variations
+## Results
 
-### Base Surface Variations
+### **Base Surface Variations**
 
 1. **Variation 1**
 
@@ -156,7 +121,6 @@
    ![Canopy 1](images/Final_Structure_1.jpg)
 
    - **Parameters**:
-     - Points in rhino
      - `Strength`: [1.0]
 
 2. **Variation 2**
@@ -166,7 +130,6 @@
    ![Canopy 2](images/Final_Structure_2.jpg)
 
    - **Parameters**:
-     - Points in rhino
      - `Strength`: [2.0]
 
 3. **Variation 3**
@@ -176,17 +139,16 @@
    ![Canopy 3](images/Final_Structure_3.jpg)
 
    - **Parameters**:
-     - Points in rhino
      - `Strength`: [1.5]
 
-### Tessellation Variations
+### **Tessellation Variations**
 
 1. **Variation 1**
 
    ![Tessellation 1](images/Tessellation_Curves_1.jpg)
 
    - **Parameters**:
-     - `Resulution`: [44]
+     - `Resolution`: [44]
      - `Frequency`: [50]
      - `Amplitude`: [20]
 
@@ -195,7 +157,7 @@
    ![Tessellation 2](images/Tessellation_Curves_2.jpg)
 
    - **Parameters**:
-     - `Resulution`: [60]
+     - `Resolution`: [60]
      - `Frequency`: [42]
      - `Amplitude`: [40]
 
@@ -204,11 +166,11 @@
    ![Tessellation 3](images/Tessellation_Curves_3.jpg)
 
    - **Parameters**:
-     - `Resulution`: [32]
+     - `Resolution`: [32]
      - `Frequency`: [43]
      - `Amplitude`: [4]
 
-### Recursive Supports Variations
+### **Recursive Supports Variations**
 
 1. **Variation 1**
 
@@ -249,23 +211,24 @@
 
 ## Challenges and Solutions
 
-- **Challenge 1**: Having a vision or inspiration, and not knowing how to make it.
-  - **Solution**: I made something else.
+### **Challenge 1: Generating Non-Planar Voronoi Structures**
+- **Problem**: Difficulty in generating non-planar Voronoi patterns.
+- **Solution**: Switched to a tessellation approach for better adaptability to non-planar surfaces.
 
-- **Challenge 2**: Not knowing how to debug and fix the errors in my code.
-  - **Solution**: I got ChatGPT to explain it to me and sometimes help me fix the errors.
+### **Challenge 2: Debugging Recursive Structures**
+- **Problem**: Errors in recursive functions for supports.
+- **Solution**: Utilized structured testing and ChatGPT assistance to debug and refine the recursion logic.
 
-- **Challenge 3**: Not being able to make a non-planar voronoi.
-  - **Solution**: I decided to not make a voronoi.
+### **Challenge 3: Complex Surface Modifications**
+- **Problem**: Aligning tessellation with deformed surfaces.
+- **Solution**: Adjusted control parameters and used projection methods to fit tessellation onto the modified surface.
 
 ---
 
 ## References
 
-- Random
-- NumPy
-- Rhino.Python Guides
-- RhinoScriptSyntax Documentation
-- ChatGPT
-
----
+- **NumPy Documentation**: [https://numpy.org/doc/]
+- **Rhino.Python Guides**: [https://developer.rhino3d.com/guides/rhinopython/]
+- **RhinoScriptSyntax Documentation**: [https://developer.rhino3d.com/api/RhinoScriptSyntax/]
+- **Matplotlib Documentation**: [https://matplotlib.org/stable/index.html]
+- **Shapely Library**: [https://shapely.readthedocs.io/en/stable/manual.html]
