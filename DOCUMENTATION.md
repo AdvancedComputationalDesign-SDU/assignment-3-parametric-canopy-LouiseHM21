@@ -76,13 +76,13 @@
 
 - **Mathematical Functions**:
   - Attractor influence: 
-    \[
+    $$
     \text{weight} = \frac{1}{\text{distance} + \epsilon}
-    \]
+    $$
   - Vertical displacement: 
-    \[
+    $$
     \text{movement} = \text{z\_diff} \times \text{weight} \times \text{strength}
-    \]
+    $$
 
 - **Control Parameters**:
   - `Strength`: Intensity of deformation.
