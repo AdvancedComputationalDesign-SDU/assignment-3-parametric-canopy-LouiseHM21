@@ -227,8 +227,17 @@
 
 ## References
 
-- **NumPy Documentation**: [https://numpy.org/doc/]
-- **Rhino.Python Guides**: [https://developer.rhino3d.com/guides/rhinopython/]
-- **RhinoScriptSyntax Documentation**: [https://developer.rhino3d.com/api/RhinoScriptSyntax/]
-- **Matplotlib Documentation**: [https://matplotlib.org/stable/index.html]
-- **Shapely Library**: [https://shapely.readthedocs.io/en/stable/manual.html]
+- **NumPy Documentation**: [https://numpy.org/doc/]  
+  *(Used for numerical computations in grid and mesh manipulation.)*
+
+- **Rhino.Python Guides**: [https://developer.rhino3d.com/guides/rhinopython/]  
+  *(Provided guidance on automating Rhino for canopy generation.)*
+
+- **RhinoScriptSyntax Documentation**: [https://developer.rhino3d.com/api/RhinoScriptSyntax/]  
+  *(Used for scripting geometric transformations and tessellation within Rhino.)*
+
+- **Matplotlib Documentation**: [https://matplotlib.org/stable/index.html]  
+  *(Helped visualize support structures and depth maps.)*
+
+- **Shapely Library**: [https://shapely.readthedocs.io/en/stable/manual.html]  
+  *(Enabled precise geometric operations like recursive branching and transformations.)*
