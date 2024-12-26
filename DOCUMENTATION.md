@@ -62,6 +62,8 @@
   - *Purpose*: Apply thickness to curves for a solid structure.
   - *Process*: Pipe curves generated from tessellation and supports.
 
+### **Workflow Diagram**
+
    ![Grasshopper script](images/Grasshopper_Script.png)
 
 ---
@@ -77,11 +79,11 @@
 - **Mathematical Functions**:
   - Attractor influence: 
     $$
-    \text{weight} = \frac{1}{\text{distance} + \epsilon}
+    weight = \frac{1}{{distance} + \epsilon}
     $$
   - Vertical displacement: 
     $$
-    \text{movement} = \text{z\_diff} \times \text{weight} \times \text{strength}
+    movement = {z_{diff}} \times {weight} \times {strength}
     $$
 
 - **Control Parameters**:
