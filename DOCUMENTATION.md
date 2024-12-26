@@ -62,6 +62,8 @@
   - *Purpose*: Apply thickness to curves for a solid structure.
   - *Process*: Pipe curves generated from tessellation and supports.
 
+   ![Grasshopper script](images/Grasshopper_Script.png)
+
 ---
 
 ## Technical Explanation
