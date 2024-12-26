@@ -3,6 +3,7 @@
 ## Table of Contents
 
 - [Pseudo-Code](#pseudo-code)
+- [Grasshopper Workflow](#grasshopper-workflow)
 - [Technical Explanation](#technical-explanation)
 - [Results](#results)
 - [Challenges and Solutions](#challenges-and-solutions)
@@ -60,13 +61,13 @@
 
 - **`Mesh Pipe`**:
   - *Purpose*: Apply thickness to curves for a solid structure.
-  - *Process*: Pipe curves generated from tessellation and supports.
-
-### **Workflow Diagram**
-
-   ![Grasshopper script](images/Grasshopper_Script.png)
+  - *Process*: Pipe curves generated from tessellation and supports
 
 ---
+
+## Grasshopper Workflow
+
+   ![Grasshopper script](images/Grasshopper_Script.png)
 
 ## Technical Explanation
 
